@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import styles from './Product.module.scss';
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
 import ProductOptions from '../ProductOptions/ProductOptions';
 import ProductImage from '../ProductImage/ProductImage';
 
@@ -8,9 +8,12 @@ const Product = (props) => {
   const [currentColor, setCurrentColor] = useState(props.colors[0]);
   const [currentSize, setCurrentSize] = useState(props.sizes[0].name);
 
-  const getPrice = (currentSize) => {
-    return props.basePrice + props.sizes.find((size) => size.name === currentSize).additionalPrice;
-  };
+  const getPrice = useMemo(() => {
+    return (currentSize) => {
+      console.log('Uzyto getPrice');
+      return props.basePrice + props.sizes.find((size) => size.name === currentSize).additionalPrice;
+    };
+  }, [currentSize]);
 
   return (
     <article className={styles.product}>
